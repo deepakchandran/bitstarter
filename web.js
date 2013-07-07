@@ -7,7 +7,7 @@ var app = express.createServer(express.logger());
 app.get('/', function(request, response) {
 
 	
-  response.send('buffer.toString(buf);
+  response.send(buffer.toString(buf);
 });
 
 var port = process.env.PORT || 5000;
