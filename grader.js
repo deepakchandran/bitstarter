@@ -61,13 +61,10 @@ var checkHtmlFile = function(htmlfile, checksfile) {
 var checkURLFile = function(urlfile, checksfile) {
 	var out = {};    
 	var result;
-	rest.get(urlfile).on('complete',result);
-    	var checks = loadChecks(checksfile).sort();
-	$ = cheerioHtmlFile(result);    	
-	for(var ii in checks) {
-        var present = $(result)(checks[ii]).length > 0;
-        out[checks[ii]] = present;
-   	 }
+
+	rest.get(urlfile).on('complete',function(result){
+	out = checkHtmlFile(result, checksfile);
+	});
 
     return out;
 };
