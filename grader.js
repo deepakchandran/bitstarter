@@ -28,6 +28,7 @@ var request = require('request');
 var HTMLFILE_DEFAULT = null;
 var CHECKSFILE_DEFAULT = "checks.json";
 var URL_DEFAULT = null;
+var rest = require('restler');
 
 var assertFileExists = function(infile) {
     var instr = infile.toString();
@@ -59,16 +60,15 @@ var checkHtmlFile = function(htmlfile, checksfile) {
 
 var checkURLFile = function(urlfile, checksfile) {
 	var out = {};    
-	request(urlfile, function(error,response,body){
-	var $ = cheerio.load(body);
-	 var checks = loadChecks(checksfile).sort();
-    	
-    	for(var ii in checks) {
-        var present = $(checks[ii]).length > 0;
+	var result;
+	rest.get(urlfile).on('complete',result);
+    	var checks = loadChecks(checksfile).sort();
+	$ = cheerioHtmlFile(result);    	
+	for(var ii in checks) {
+        var present = $(result)(checks[ii]).length > 0;
         out[checks[ii]] = present;
    	 }
-	return out;
-		});
+
     return out;
 };
 	
